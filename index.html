@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PMAX · Marketing Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0000FF;
+  --navy:#001A6E;
+  --blue-lt:#E8EEFF;
+  --blue-md:#C5CEFF;
+  --white:#FFFFFF;
+  --bg:#F5F7FF;
+  --muted:#6B7A99;
+  --border:#D0D8F0;
+  --red:#CC2200;
+  --gold:#C8922A;
+  --teal:#0057A8;
+  --radius:10px;
+}
+body{font-family:'Lexend',sans-serif;background:var(--bg);color:var(--navy);min-height:100vh;font-size:14px}
+
+/* TOP BAR */
+#topbar{position:sticky;top:0;z-index:100;background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:52px}
+#topbar .brand{color:#fff;font-weight:700;font-size:15px;letter-spacing:.5px}
+#topbar .tag{color:var(--blue-md);font-size:11px;font-weight:400}
+
+/* CONFIG BANNER */
+#config-banner{background:var(--navy);padding:12px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;transition:background .3s}
+#config-banner.connected{background:var(--teal)}
+#config-banner .cfg-label{color:#fff;font-size:12px;font-weight:500;white-space:nowrap;flex-shrink:0}
+#config-url{flex:1;min-width:200px;max-width:520px;padding:7px 12px;border-radius:6px;border:none;font-family:'Lexend',sans-serif;font-size:12px;background:rgba(255,255,255,.12);color:#fff;outline:none}
+#config-url::placeholder{color:rgba(255,255,255,.45)}
+#config-url:focus{background:rgba(255,255,255,.2)}
+.cfg-btn{padding:7px 14px;border-radius:6px;border:none;cursor:pointer;font-family:'Lexend',sans-serif;font-size:12px;font-weight:600;transition:.15s}
+#btn-save-url{background:var(--blue);color:#fff}
+#btn-save-url:hover{opacity:.85}
+#btn-guide{background:rgba(255,255,255,.15);color:#fff}
+#btn-guide:hover{background:rgba(255,255,255,.25)}
+
+/* PROGRESS BAR */
+#progress-bar{background:#fff;border-bottom:1px solid var(--border);padding:0 24px;overflow-x:auto;display:flex;align-items:center;gap:0;min-height:58px}
+.step-item{display:flex;align-items:center;flex-shrink:0}
+.step-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;transition:.2s;position:relative}
+.step-dot.active{border-color:var(--blue);background:var(--blue);color:#fff}
+.step-dot.done{border-color:var(--teal);background:var(--teal);color:#fff}
+.step-label{font-size:10px;color:var(--muted);margin-left:6px;white-space:nowrap;max-width:90px;overflow:hidden;text-overflow:ellipsis}
+.step-label.active{color:var(--blue);font-weight:600}
+.step-label.done{color:var(--teal)}
+.step-connector{width:24px;height:2px;background:var(--border);margin:0 4px;flex-shrink:0}
+.step-connector.done{background:var(--teal)}
+
+/* MAIN */
+#main{max-width:780px;margin:0 auto;padding:28px 20px 80px}
+
+/* PANELS */
+.panel{display:none;animation:fadeIn .25s ease}
+.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* SECTION HEADER */
+.sec-header{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.sec-roman{background:var(--blue);color:#fff;font-size:13px;font-weight:700;border-radius:8px;padding:6px 14px;letter-spacing:.5px}
+.sec-title{font-size:18px;font-weight:700;color:var(--navy)}
+
+/* NOTICE BOXES */
+.notice{border-radius:8px;padding:14px 16px;margin-bottom:18px;font-size:13px;line-height:1.6;border-left:4px solid}
+.notice.info{border-color:var(--blue);background:var(--blue-lt);color:var(--navy)}
+.notice.warning{border-color:var(--gold);background:#FFF8EE;color:#7A4A00}
+.notice.ok{border-color:var(--teal);background:#EEF7FF;color:var(--teal)}
+.notice strong{font-weight:600}
+.notice ul{margin-top:6px;padding-left:18px}
+.notice ul li{margin-bottom:2px}
+
+/* FORM FIELD */
+.field{margin-bottom:20px}
+.field-label{font-size:13px;font-weight:600;color:var(--navy);margin-bottom:6px;display:flex;align-items:center;gap:4px}
+.req{color:var(--red)}
+.opt{font-size:11px;color:var(--muted);font-weight:400}
+.hint{font-size:11px;color:var(--muted);font-style:italic;margin-top:3px}
+input[type="text"],input[type="email"],input[type="date"],select,textarea{
+  width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;
+  font-family:'Lexend',sans-serif;font-size:13px;color:var(--navy);background:#fff;outline:none;
+  transition:.15s
+}
+input[type="text"]:focus,input[type="email"]:focus,input[type="date"]:focus,select:focus,textarea:focus{
+  border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,0,255,.09)
+}
+textarea{resize:vertical;min-height:88px;line-height:1.6}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7A99' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+
+/* DATE RANGE */
+.date-range{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.date-range .dr-label{font-size:11px;color:var(--muted);margin-bottom:3px}
+
+/* CHECKBOX / RADIO */
+.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.check-item{display:flex;align-items:center;gap:8px;padding:9px 13px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;transition:.15s;background:#fff;user-select:none}
+.check-item:hover{border-color:var(--blue);background:var(--blue-lt)}
+.check-item.selected{border-color:var(--blue);background:var(--blue-lt)}
+.check-item input{width:15px;height:15px;accent-color:var(--blue);flex-shrink:0}
+.check-item span{font-size:12px;color:var(--navy);line-height:1.4}
+
+/* SCALE */
+.scale-wrap{display:flex;flex-direction:column;gap:8px}
+.scale-opts{display:flex;gap:8px}
+.scale-opt{width:50px;height:50px;border:1.5px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;cursor:pointer;background:#fff;transition:.15s;color:var(--muted)}
+.scale-opt:hover{border-color:var(--blue);background:var(--blue-lt);color:var(--blue)}
+.scale-opt.selected{border-color:var(--blue);background:var(--blue);color:#fff}
+.scale-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);padding:0 4px}
+
+/* NAVIGATION */
+#nav-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;z-index:90}
+.nav-info{font-size:12px;color:var(--muted);font-weight:500}
+.btn{padding:10px 22px;border-radius:8px;border:none;cursor:pointer;font-family:'Lexend',sans-serif;font-size:13px;font-weight:600;transition:.15s;display:inline-flex;align-items:center;gap:6px}
+.btn-ghost{background:transparent;color:var(--navy);border:1.5px solid var(--border)}
+.btn-ghost:hover{border-color:var(--blue);color:var(--blue)}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{opacity:.85}
+.btn-submit{background:var(--teal);color:#fff}
+.btn-submit:hover{opacity:.85}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+/* SUCCESS */
+#success-screen{display:none;text-align:center;padding:60px 20px}
+.success-circle{width:80px;height:80px;border-radius:50%;background:var(--blue);color:#fff;font-size:36px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:20px}
+.success-title{font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.success-sub{font-size:14px;color:var(--muted)}
+.btn-new{margin-top:24px;background:var(--blue);color:#fff;padding:12px 28px;border-radius:8px;border:none;cursor:pointer;font-family:'Lexend',sans-serif;font-size:14px;font-weight:600}
+
+/* BRIEF LIST */
+#brief-list-wrap{margin-top:16px}
+.brief-list-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.brief-list-title{font-size:14px;font-weight:700;color:var(--navy)}
+.brief-actions{display:flex;gap:8px}
+.btn-sm{padding:6px 12px;border-radius:6px;border:1.5px solid var(--border);background:#fff;font-family:'Lexend',sans-serif;font-size:11px;font-weight:600;cursor:pointer;color:var(--navy);transition:.15s}
+.btn-sm:hover{border-color:var(--blue);color:var(--blue)}
+.brief-table{width:100%;border-collapse:collapse;font-size:12px}
+.brief-table th{background:var(--navy);color:#fff;padding:8px 12px;text-align:left;font-weight:600}
+.brief-table td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:middle;cursor:pointer}
+.brief-table tr:hover td{background:var(--blue-lt)}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;color:#fff}
+.p5{background:#CC2200}.p4{background:var(--gold)}.p3{background:var(--blue)}.p2{background:#27AE60}.p1{background:var(--muted)}
+.empty-state{text-align:center;padding:32px;color:var(--muted);font-size:13px}
+
+/* MODAL */
+#modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,10,60,.5);z-index:200;align-items:center;justify-content:center;padding:20px}
+#modal-overlay.open{display:flex}
+#modal-box{background:#fff;border-radius:14px;max-width:640px;width:100%;max-height:85vh;overflow-y:auto;padding:28px}
+.modal-title{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:20px;display:flex;justify-content:space-between;align-items:center}
+.modal-close{cursor:pointer;font-size:20px;color:var(--muted);line-height:1}
+.modal-field{margin-bottom:12px;display:grid;grid-template-columns:160px 1fr;gap:8px;font-size:13px}
+.modal-key{font-weight:600;color:var(--navy)}
+.modal-val{color:#333}
+
+/* GUIDE MODAL */
+#guide-overlay{display:none;position:fixed;inset:0;background:rgba(0,10,60,.5);z-index:300;align-items:center;justify-content:center;padding:20px}
+#guide-overlay.open{display:flex}
+#guide-box{background:#fff;border-radius:14px;max-width:580px;width:100%;max-height:90vh;overflow-y:auto;padding:28px}
+.guide-step{margin-bottom:16px;border-radius:8px;overflow:hidden}
+.guide-step-head{background:var(--blue);color:#fff;padding:10px 16px;font-size:13px;font-weight:700}
+.guide-step-body{background:var(--blue-lt);padding:12px 16px;font-size:12px;color:var(--navy);line-height:1.7}
+
+/* LOADER */
+#loader{display:none;position:fixed;inset:0;background:rgba(255,255,255,.8);z-index:400;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+#loader.open{display:flex}
+.spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader-text{font-size:13px;color:var(--muted)}
+
+/* COMMIT BOX */
+.commit-box{border:1.5px solid var(--blue-md);border-radius:10px;padding:16px;background:var(--blue-lt);font-size:13px;line-height:1.7;color:var(--navy);margin-bottom:20px}
+.commit-box strong{color:var(--blue)}
+
+/* RESPONSIVE */
+@media(max-width:620px){
+  #topbar{padding:0 14px}
+  #main{padding:18px 12px 80px}
+  .check-grid{grid-template-columns:1fr}
+  .date-range{grid-template-columns:1fr}
+  .step-label{display:none}
+  .scale-opts{gap:5px}
+  .scale-opt{width:42px;height:42px;font-size:14px}
+  #config-banner{gap:6px}
+  #config-url{min-width:0}
+  .modal-field{grid-template-columns:1fr;gap:2px}
+  .modal-key{font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div id="topbar">
+  <span class="brand">PMAX · Marketing Brief</span>
+  <span class="tag">Internal Use Only</span>
+</div>
+
+<!-- CONFIG BANNER -->
+<div id="config-banner">
+  <span class="cfg-label">⚙️ Kết nối Google Sheets — Dán Web App URL:</span>
+  <input type="text" id="config-url" placeholder="https://script.google.com/macros/s/.../exec">
+  <button class="cfg-btn" id="btn-save-url">Lưu</button>
+  <button class="cfg-btn" id="btn-guide">Hướng dẫn</button>
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar"></div>
+
+<!-- MAIN CONTENT -->
+<div id="main">
+
+  <!-- PANEL 0: WELCOME -->
+  <div class="panel active" id="panel-0">
+    <div class="sec-header">
+      <div class="sec-title">📋 PMAX Marketing Brief Form</div>
+    </div>
+
+    <div class="notice info">
+      <strong>Hướng dẫn sử dụng</strong>
+      <ul>
+        <li>Gửi brief ít nhất <strong>4 tuần</strong> trước ngày dự kiến ra mắt (campaign lớn / product launch)</li>
+        <li>Gửi ít nhất <strong>1 tuần</strong> trước đối với PR nội bộ, social post đơn lẻ, ấn phẩm nhỏ</li>
+        <li>Liên hệ Team Marketing nếu có thắc mắc trước khi điền form</li>
+      </ul>
+    </div>
+    <div class="notice warning">
+      <strong>⚠️ Lưu ý quan trọng</strong><br>
+      Brief sẽ được ghi nhận và xem xét — không đảm bảo campaign triển khai ngay. MKT sẽ phản hồi trong <strong>1–2 tuần</strong>: xác nhận khả năng thực hiện, timeline hoặc đề xuất điều chỉnh.
+    </div>
+
+    <div id="brief-list-wrap">
+      <div class="brief-list-header">
+        <div class="brief-list-title">📊 Danh sách brief đã gửi</div>
+        <div class="brief-actions">
+          <button class="btn-sm" id="btn-reload">↺ Tải lại</button>
+          <button class="btn-sm" id="btn-export">⬇ Xuất CSV</button>
+        </div>
+      </div>
+      <div id="brief-list-container">
+        <div class="empty-state">Chưa có brief nào. Hãy gửi brief đầu tiên!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 1: THÔNG TIN CHUNG -->
+  <div class="panel" id="panel-1">
+    <div class="sec-header">
+      <div class="sec-roman">I</div>
+      <div class="sec-title">THÔNG TIN CHUNG</div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Tên phòng ban / Bộ phận <span class="req">*</span></div>
+      <input type="text" id="f-dept" placeholder="Account / Media / Trading / HR & Admin / ...">
+    </div>
+    <div class="field">
+      <div class="field-label">Người yêu cầu <span class="req">*</span></div>
+      <input type="text" id="f-requester" placeholder="Họ và tên đầy đủ">
+    </div>
+    <div class="field">
+      <div class="field-label">Chức danh <span class="req">*</span></div>
+      <input type="text" id="f-title" placeholder="Ví dụ: Product Manager">
+    </div>
+    <div class="field">
+      <div class="field-label">Email liên hệ <span class="req">*</span></div>
+      <input type="email" id="f-email" placeholder="email@pmax.vn">
+    </div>
+    <div class="field">
+      <div class="field-label">Người phê duyệt chính <span class="req">*</span></div>
+      <input type="text" id="f-approver" placeholder="Manager / Director">
+    </div>
+    <div class="field">
+      <div class="field-label">Ngày gửi brief <span class="req">*</span></div>
+      <input type="date" id="f-submit-date">
+    </div>
+  </div>
+
+  <!-- PANEL 2: MỤC TIÊU & NGÂN SÁCH -->
+  <div class="panel" id="panel-2">
+    <div class="sec-header">
+      <div class="sec-roman">II</div>
+      <div class="sec-title">MỤC TIÊU & NGÂN SÁCH</div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Mục tiêu campaign <span class="req">*</span></div>
+      <div class="check-grid" id="f-goals">
+        <label class="check-item"><input type="checkbox" value="Lead Generation – Tạo khách hàng tiềm năng mới"><span>Lead Generation – Tạo khách hàng tiềm năng mới</span></label>
+        <label class="check-item"><input type="checkbox" value="Product Awareness (GTM) – Launching product ra thị trường"><span>Product Awareness (GTM) – Launching product ra thị trường</span></label>
+        <label class="check-item"><input type="checkbox" value="Sales Enablement – Hỗ trợ Sales / Pitching team"><span>Sales Enablement – Hỗ trợ Sales / Pitching team</span></label>
+        <label class="check-item"><input type="checkbox" value="Upsell / Cross-sell – Đối với existing client"><span>Upsell / Cross-sell – Đối với existing client</span></label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="field-label">Target KPI (propose) <span class="req">*</span></div>
+      <input type="text" id="f-kpi" placeholder="Ví dụ: 1,000 impressions / 50 leads / 200 lượt tải...">
+    </div>
+    <div class="field">
+      <div class="field-label">Đối tượng mục tiêu (Target Audience) <span class="req">*</span></div>
+      <textarea id="f-audience" placeholder="Ngành nghề, chức danh, nhân khẩu học, hành vi..."></textarea>
+    </div>
+    <div class="field">
+      <div class="field-label">Thị trường / Khu vực <span class="req">*</span></div>
+      <input type="text" id="f-market" placeholder="Toàn quốc / TP.HCM / Hà Nội / Quốc tế...">
+    </div>
+    <div class="field">
+      <div class="field-label">Thông điệp chính (Key Message) <span class="req">*</span></div>
+      <textarea id="f-message" placeholder="Điều cốt lõi muốn truyền đạt — một câu nếu có thể"></textarea>
+    </div>
+    <div class="field">
+      <div class="field-label">USP / Điểm khác biệt <span class="req">*</span></div>
+      <textarea id="f-usp" placeholder="Điều gì làm sản phẩm / hoạt động này nổi bật?"></textarea>
+    </div>
+    <div class="field">
+      <div class="field-label">Ngân sách team có thể input <span class="opt">(không bắt buộc)</span></div>
+      <input type="text" id="f-budget" placeholder="Ví dụ: 50 triệu VNĐ">
+    </div>
+    <div class="field">
+      <div class="field-label">Nguồn ngân sách <span class="req">*</span></div>
+      <div class="check-grid" id="f-budget-source">
+        <label class="check-item"><input type="checkbox" value="Cost team"><span>Cost team</span></label>
+        <label class="check-item"><input type="checkbox" value="Cost Corp"><span>Cost Corp</span></label>
+        <label class="check-item"><input type="checkbox" value="Cost từ Partner (platform, customer...)"><span>Cost từ Partner (platform, customer...)</span></label>
+        <label class="check-item"><input type="checkbox" value="Khác"><span>Khác</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 3: TIMELINE -->
+  <div class="panel" id="panel-3">
+    <div class="sec-header">
+      <div class="sec-roman">III</div>
+      <div class="sec-title">TIMELINE</div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Thời gian mong muốn triển khai <span class="req">*</span></div>
+      <div class="date-range">
+        <div>
+          <div class="dr-label">Từ ngày</div>
+          <input type="date" id="f-date-start">
+        </div>
+        <div>
+          <div class="dr-label">Đến ngày</div>
+          <input type="date" id="f-date-end">
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Mức độ ưu tiên trong tháng <span class="req">*</span></div>
+      <div class="scale-wrap">
+        <div class="scale-opts" id="f-priority">
+          <div class="scale-opt" data-val="1">1</div>
+          <div class="scale-opt" data-val="2">2</div>
+          <div class="scale-opt" data-val="3">3</div>
+          <div class="scale-opt" data-val="4">4</div>
+          <div class="scale-opt" data-val="5">5</div>
+        </div>
+        <div class="scale-labels"><span>Không gấp</span><span>Cần ngay</span></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Lý do ưu tiên <span class="req">*</span></div>
+      <textarea id="f-priority-reason" placeholder="Giải thích tại sao hoạt động này cần ưu tiên trong tháng — context càng rõ, MKT càng dễ phân bổ nguồn lực"></textarea>
+    </div>
+  </div>
+
+  <!-- PANEL 4: HÌNH THỨC & KÊNH -->
+  <div class="panel" id="panel-4">
+    <div class="sec-header">
+      <div class="sec-roman">IV</div>
+      <div class="sec-title">HÌNH THỨC TRIỂN KHAI & KÊNH TIẾP CẬN</div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Hình thức triển khai <span class="req">*</span></div>
+      <div class="check-grid" id="f-format">
+        <label class="check-item"><input type="checkbox" value="Tài liệu / Deck / Case study"><span>Tài liệu / Deck / Case study</span></label>
+        <label class="check-item"><input type="checkbox" value="Paid ads / Digital campaign"><span>Paid ads / Digital campaign</span></label>
+        <label class="check-item"><input type="checkbox" value="Event / Webinar"><span>Event / Webinar</span></label>
+        <label class="check-item"><input type="checkbox" value="Email marketing"><span>Email marketing</span></label>
+        <label class="check-item"><input type="checkbox" value="Content / Bài viết"><span>Content / Bài viết</span></label>
+        <label class="check-item"><input type="checkbox" value="Khác"><span>Khác</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Kênh truyền thông đề xuất <span class="req">*</span></div>
+      <div class="check-grid" id="f-channels">
+        <label class="check-item"><input type="checkbox" value="Social Channel (Facebook, LinkedIn...)"><span>Social Channel (Facebook, LinkedIn...)</span></label>
+        <label class="check-item"><input type="checkbox" value="TikTok"><span>TikTok</span></label>
+        <label class="check-item"><input type="checkbox" value="YouTube"><span>YouTube</span></label>
+        <label class="check-item"><input type="checkbox" value="Website / Blog"><span>Website / Blog</span></label>
+        <label class="check-item"><input type="checkbox" value="Email"><span>Email</span></label>
+        <label class="check-item"><input type="checkbox" value="Báo / PR Online"><span>Báo / PR Online</span></label>
+        <label class="check-item"><input type="checkbox" value="Paid Ads"><span>Paid Ads</span></label>
+        <label class="check-item"><input type="checkbox" value="Khác"><span>Khác</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 5: THÔNG TIN SẢN PHẨM -->
+  <div class="panel" id="panel-5">
+    <div class="sec-header">
+      <div class="sec-roman">V</div>
+      <div class="sec-title">THÔNG TIN SẢN PHẨM / DỊCH VỤ</div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Tên sản phẩm / dịch vụ <span class="opt">(không bắt buộc)</span></div>
+      <input type="text" id="f-product-name" placeholder="Tên chính thức">
+    </div>
+    <div class="field">
+      <div class="field-label">Danh mục sản phẩm <span class="opt">(không bắt buộc)</span></div>
+      <input type="text" id="f-category" placeholder="Ví dụ: Performance Marketing, AI Agents, Creative Studio...">
+    </div>
+    <div class="field">
+      <div class="field-label">Giá bán / Pricing <span class="opt">(không bắt buộc)</span></div>
+      <textarea id="f-pricing" placeholder="Bao gồm các gói / tier pricing nếu có"></textarea>
+    </div>
+    <div class="field">
+      <div class="field-label">Khuyến mãi <span class="opt">(không bắt buộc)</span></div>
+      <input type="text" id="f-promo" placeholder="Chương trình khuyến mãi nếu có">
+    </div>
+    <div class="field">
+      <div class="field-label">Tính năng nổi bật (3–5 điểm) <span class="opt">(không bắt buộc)</span></div>
+      <textarea id="f-features" placeholder="Liệt kê các tính năng chính"></textarea>
+    </div>
+    <div class="field">
+      <div class="field-label">Lợi ích / Lý do KH chọn sản phẩm <span class="opt">(không bắt buộc)</span></div>
+      <textarea id="f-benefits" placeholder="Sản phẩm giải quyết vấn đề gì cho khách hàng?"></textarea>
+    </div>
+    <div class="field">
+      <div class="field-label">Tài liệu / Asset đã có <span class="opt">(không bắt buộc)</span></div>
+      <div class="check-grid" id="f-assets">
+        <label class="check-item"><input type="checkbox" value="Logo, brand guideline"><span>Logo, brand guideline</span></label>
+        <label class="check-item"><input type="checkbox" value="Hình ảnh sản phẩm / dịch vụ"><span>Hình ảnh sản phẩm / dịch vụ</span></label>
+        <label class="check-item"><input type="checkbox" value="Nội dung / copy sẵn có"><span>Nội dung / copy sẵn có</span></label>
+        <label class="check-item"><input type="checkbox" value="Brief / tài liệu tham khảo trước đó"><span>Brief / tài liệu tham khảo trước đó</span></label>
+        <label class="check-item"><input type="checkbox" value="Chưa có gì, cần làm từ đầu"><span>Chưa có gì, cần làm từ đầu</span></label>
+        <label class="check-item"><input type="checkbox" value="Khác"><span>Khác</span></label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="field-label">Link tài liệu tham khảo <span class="opt">(không bắt buộc)</span></div>
+      <input type="text" id="f-link" placeholder="Google Drive / Notion link — highly recommend để MKT hiểu context sâu hơn">
+      <div class="hint">Highly recommend để MKT hiểu context sâu hơn</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Đối thủ cạnh tranh <span class="opt">(không bắt buộc)</span></div>
+      <textarea id="f-competitors" placeholder="Ai đang cung cấp giải pháp tương tự?"></textarea>
+    </div>
+  </div>
+
+  <!-- PANEL 6: YÊU CẦU KHÁC -->
+  <div class="panel" id="panel-6">
+    <div class="sec-header">
+      <div class="sec-roman">VI</div>
+      <div class="sec-title">YÊU CẦU & THÔNG TIN KHÁC</div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Yêu cầu đặc biệt <span class="opt">(không bắt buộc)</span></div>
+      <textarea id="f-special" placeholder="Bất kỳ yêu cầu nào chưa được đề cập ở trên"></textarea>
+    </div>
+    <div class="field">
+      <div class="field-label">Hạn chế / Những điểm cần tránh <span class="opt">(không bắt buộc)</span></div>
+      <textarea id="f-constraints" placeholder="Ràng buộc pháp lý, thương hiệu, thị trường..."></textarea>
+    </div>
+
+    <div class="commit-box">
+      <strong>✅ Cam kết đồng hành</strong><br>
+      Khi gửi brief này, team xác nhận thông tin cung cấp là chính xác, sẵn sàng tham gia review &amp; feedback trong quá trình triển khai, và cùng chịu trách nhiệm với kết quả đầu ra nếu campaign được MKT triển khai dựa trên brief này.
+    </div>
+
+    <div class="notice ok">
+      Liên hệ: <strong>marketing@pmax.vn</strong> · Slack: <strong>#team-marketing</strong> · MKT phản hồi trong <strong>1–2 tuần</strong>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div id="success-screen">
+    <div class="success-circle">✓</div>
+    <div class="success-title">Brief đã được gửi thành công!</div>
+    <div class="success-sub">Team Marketing sẽ xem xét và phản hồi trong 1–2 tuần.<br>Cảm ơn bạn đã điền đầy đủ thông tin.</div>
+    <button class="btn-new" onclick="resetForm()">Gửi brief mới</button>
+  </div>
+</div>
+
+<!-- NAV BAR -->
+<div id="nav-bar">
+  <button class="btn btn-ghost" id="btn-back" onclick="goBack()">← Quay lại</button>
+  <span class="nav-info" id="nav-info">Bước 1 / 7</span>
+  <button class="btn btn-primary" id="btn-next" onclick="goNext()">Tiếp theo →</button>
+</div>
+
+<!-- DETAIL MODAL -->
+<div id="modal-overlay" onclick="closeModal(event)">
+  <div id="modal-box">
+    <div class="modal-title">
+      <span>Chi tiết brief</span>
+      <span class="modal-close" onclick="document.getElementById('modal-overlay').classList.remove('open')">✕</span>
+    </div>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- GUIDE MODAL -->
+<div id="guide-overlay" onclick="closeGuide(event)">
+  <div id="guide-box">
+    <div class="modal-title">
+      <span>⚙️ Hướng dẫn kết nối Google Sheets + GitHub Pages</span>
+      <span class="modal-close" onclick="document.getElementById('guide-overlay').classList.remove('open')">✕</span>
+    </div>
+    <div class="guide-step"><div class="guide-step-head">Bước 1 — Tạo Google Sheet</div><div class="guide-step-body">Vào <strong>sheets.google.com</strong> → tạo spreadsheet mới. Đặt tên: <em>PMAX Marketing Briefs</em>. Sheet "Briefs" sẽ được Apps Script tự tạo với header đúng chuẩn.</div></div>
+    <div class="guide-step"><div class="guide-step-head">Bước 2 — Mở Apps Script</div><div class="guide-step-body">Trong Google Sheet: <strong>Extensions → Apps Script</strong>. Xóa toàn bộ code mặc định trong file Code.gs.</div></div>
+    <div class="guide-step"><div class="guide-step-head">Bước 3 — Dán code backend</div><div class="guide-step-body">Copy toàn bộ nội dung file <strong>Code.gs</strong> đã được cung cấp. Dán vào editor → nhấn Save (Ctrl+S).</div></div>
+    <div class="guide-step"><div class="guide-step-head">Bước 4 — Deploy Web App</div><div class="guide-step-body">Nhấn <strong>Deploy → New deployment</strong>. Type: <em>Web app</em> | Execute as: <em>Me</em> | Who has access: <em>Anyone</em>. Nhấn Deploy → copy URL dạng: <code>https://script.google.com/macros/s/.../exec</code></div></div>
+    <div class="guide-step"><div class="guide-step-head">Bước 5 — Kết nối với form web</div><div class="guide-step-body">Mở trang index.html → dán URL vào banner xanh → nhấn <strong>Lưu</strong>. Từ đây mọi brief gửi đi sẽ ghi thẳng vào tab "Briefs".</div></div>
+    <div class="guide-step"><div class="guide-step-head">Bước 6 — Deploy lên GitHub Pages</div><div class="guide-step-body">Tạo repo mới trên GitHub (ví dụ: <em>pmax-brief</em>). Upload file <em>index.html</em>. Settings → Pages → Branch: main → Save. GitHub cấp link: <code>https://yourname.github.io/pmax-brief</code> — share cho toàn công ty.</div></div>
+  </div>
+</div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="spinner"></div>
+  <div class="loader-text">Đang gửi brief...</div>
+</div>
+
+<script>
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let currentStep = 0;
+const TOTAL_STEPS = 7; // 0=Welcome, 1-6=sections
+const STEPS = ['Welcome','I. Thông tin','II. Mục tiêu','III. Timeline','IV. Kênh','V. Sản phẩm','VI. Yêu cầu'];
+let selectedPriority = null;
+const LOCAL_KEY = 'pmax_briefs_local';
+const URL_KEY = 'pmax_script_url';
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Restore URL
+  const saved = localStorage.getItem(URL_KEY);
+  if (saved) {
+    document.getElementById('config-url').value = saved;
+    updateBannerConnected(true);
+  }
+
+  // Set today's date
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('f-submit-date').value = today;
+
+  buildProgressBar();
+  updateNav();
+  setupCheckItems();
+  setupScale();
+  loadAndRender();
+
+  document.getElementById('btn-save-url').addEventListener('click', saveUrl);
+  document.getElementById('btn-guide').addEventListener('click', () => document.getElementById('guide-overlay').classList.add('open'));
+  document.getElementById('btn-reload').addEventListener('click', loadAndRender);
+  document.getElementById('btn-export').addEventListener('click', exportCSV);
+});
+
+// ─── PROGRESS BAR ────────────────────────────────────────────────────────────
+function buildProgressBar() {
+  const bar = document.getElementById('progress-bar');
+  bar.innerHTML = '';
+  STEPS.forEach((label, i) => {
+    if (i > 0) {
+      const conn = document.createElement('div');
+      conn.className = 'step-connector' + (i <= currentStep ? ' done' : '');
+      conn.id = 'conn-' + i;
+      bar.appendChild(conn);
+    }
+    const item = document.createElement('div');
+    item.className = 'step-item';
+    const dot = document.createElement('div');
+    dot.className = 'step-dot' + (i === currentStep ? ' active' : i < currentStep ? ' done' : '');
+    dot.textContent = i < currentStep ? '✓' : (i + 1);
+    dot.onclick = () => goTo(i);
+    const lbl = document.createElement('div');
+    lbl.className = 'step-label' + (i === currentStep ? ' active' : i < currentStep ? ' done' : '');
+    lbl.textContent = label;
+    item.appendChild(dot);
+    item.appendChild(lbl);
+    bar.appendChild(item);
+  });
+}
+
+function updateNav() {
+  const info = document.getElementById('nav-info');
+  const btnBack = document.getElementById('btn-back');
+  const btnNext = document.getElementById('btn-next');
+  info.textContent = `Bước ${currentStep + 1} / ${TOTAL_STEPS}`;
+  btnBack.disabled = currentStep === 0;
+  if (currentStep === TOTAL_STEPS - 1) {
+    btnNext.textContent = 'Gửi Brief ✓';
+    btnNext.className = 'btn btn-submit';
+    btnNext.onclick = submitForm;
+  } else {
+    btnNext.textContent = 'Tiếp theo →';
+    btnNext.className = 'btn btn-primary';
+    btnNext.onclick = goNext;
+  }
+}
+
+function goTo(step) {
+  document.getElementById(`panel-${currentStep}`).classList.remove('active');
+  currentStep = step;
+  document.getElementById(`panel-${currentStep}`).classList.add('active');
+  buildProgressBar();
+  updateNav();
+  window.scrollTo(0, 0);
+}
+
+function goNext() { if (currentStep < TOTAL_STEPS - 1) goTo(currentStep + 1); }
+function goBack() { if (currentStep > 0) goTo(currentStep - 1); }
+
+// ─── SETUP INTERACTIONS ───────────────────────────────────────────────────────
+function setupCheckItems() {
+  document.querySelectorAll('.check-item input').forEach(inp => {
+    inp.addEventListener('change', () => {
+      inp.closest('.check-item').classList.toggle('selected', inp.checked);
+    });
+  });
+}
+
+function setupScale() {
+  document.querySelectorAll('#f-priority .scale-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('#f-priority .scale-opt').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      selectedPriority = opt.dataset.val;
+    });
+  });
+}
+
+// ─── GOOGLE SHEETS CONFIG ─────────────────────────────────────────────────────
+function saveUrl() {
+  const url = document.getElementById('config-url').value.trim();
+  if (url && url.startsWith('https://script.google.com')) {
+    localStorage.setItem(URL_KEY, url);
+    updateBannerConnected(true);
+    loadAndRender();
+  } else {
+    alert('URL không hợp lệ. Hãy dán URL từ Google Apps Script (bắt đầu bằng https://script.google.com)');
+  }
+}
+
+function updateBannerConnected(connected) {
+  const banner = document.getElementById('config-banner');
+  const label = banner.querySelector('.cfg-label');
+  if (connected) {
+    banner.classList.add('connected');
+    label.textContent = '✅ Đã kết nối Google Sheets';
+  } else {
+    banner.classList.remove('connected');
+    label.textContent = '⚙️ Kết nối Google Sheets — Dán Web App URL:';
+  }
+}
+
+// ─── LOAD & RENDER BRIEF LIST ─────────────────────────────────────────────────
+async function loadAndRender() {
+  const container = document.getElementById('brief-list-container');
+  const scriptUrl = localStorage.getItem(URL_KEY);
+  let briefs = [];
+
+  if (scriptUrl) {
+    try {
+      const res = await fetch(scriptUrl + '?action=get', { method: 'GET' });
+      const data = await res.json();
+      if (data.briefs && data.briefs.length) briefs = data.briefs;
+    } catch (e) {}
+  }
+
+  if (!briefs.length) {
+    const local = localStorage.getItem(LOCAL_KEY);
+    if (local) {
+      try { briefs = JSON.parse(local); } catch (e) {}
+    }
+  }
+
+  if (!briefs.length) {
+    container.innerHTML = '<div class="empty-state">Chưa có brief nào. Hãy gửi brief đầu tiên!</div>';
+    return;
+  }
+
+  let html = '<table class="brief-table"><thead><tr><th>Người gửi</th><th>Phòng ban</th><th>Mục tiêu</th><th>Ưu tiên</th><th>Thời gian gửi</th></tr></thead><tbody>';
+  briefs.forEach((b, idx) => {
+    const p = b['Mức độ ưu tiên'] || '';
+    const badgeClass = p == 5 ? 'p5' : p == 4 ? 'p4' : p == 3 ? 'p3' : p == 2 ? 'p2' : 'p1';
+    const goals = (b['Mục tiêu'] || '').split(',')[0] || '—';
+    html += `<tr onclick="openModal(${idx})">
+      <td>${b['Người yêu cầu'] || '—'}</td>
+      <td>${b['Phòng ban'] || '—'}</td>
+      <td>${goals}</td>
+      <td>${p ? `<span class="badge ${badgeClass}">P${p}</span>` : '—'}</td>
+      <td>${b['Submitted At'] || '—'}</td>
+    </tr>`;
+  });
+  html += '</tbody></table>';
+  container.innerHTML = html;
+  container._briefs = briefs;
+}
+
+function openModal(idx) {
+  const container = document.getElementById('brief-list-container');
+  const b = container._briefs[idx];
+  if (!b) return;
+  const keys = ['ID','Submitted At','Phòng ban','Người yêu cầu','Chức danh','Email','Người phê duyệt','Ngày gửi','Mục tiêu','KPI','Target Audience','Thị trường','Key Message','USP','Ngân sách','Nguồn ngân sách','Ngày bắt đầu','Ngày kết thúc','Mức độ ưu tiên','Lý do ưu tiên','Hình thức triển khai','Kênh truyền thông','Tên sản phẩm','Danh mục','Pricing','Khuyến mãi','Features','Benefits','Assets có sẵn','Link tài liệu','Đối thủ','Yêu cầu đặc biệt','Hạn chế'];
+  let html = '';
+  keys.forEach(k => {
+    if (b[k]) html += `<div class="modal-field"><div class="modal-key">${k}</div><div class="modal-val">${b[k]}</div></div>`;
+  });
+  document.getElementById('modal-content').innerHTML = html;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal(e) { if (e.target === document.getElementById('modal-overlay')) document.getElementById('modal-overlay').classList.remove('open'); }
+function closeGuide(e) { if (e.target === document.getElementById('guide-overlay')) document.getElementById('guide-overlay').classList.remove('open'); }
+
+// ─── COLLECT DATA ──────────────────────────────────────────────────────────────
+function getChecked(containerId) {
+  return Array.from(document.querySelectorAll(`#${containerId} input:checked`)).map(i => i.value).join(', ');
+}
+
+function collectData() {
+  return {
+    'Phòng ban': document.getElementById('f-dept').value.trim(),
+    'Người yêu cầu': document.getElementById('f-requester').value.trim(),
+    'Chức danh': document.getElementById('f-title').value.trim(),
+    'Email': document.getElementById('f-email').value.trim(),
+    'Người phê duyệt': document.getElementById('f-approver').value.trim(),
+    'Ngày gửi': document.getElementById('f-submit-date').value,
+    'Mục tiêu': getChecked('f-goals'),
+    'KPI': document.getElementById('f-kpi').value.trim(),
+    'Target Audience': document.getElementById('f-audience').value.trim(),
+    'Thị trường': document.getElementById('f-market').value.trim(),
+    'Key Message': document.getElementById('f-message').value.trim(),
+    'USP': document.getElementById('f-usp').value.trim(),
+    'Ngân sách': document.getElementById('f-budget').value.trim(),
+    'Nguồn ngân sách': getChecked('f-budget-source'),
+    'Ngày bắt đầu': document.getElementById('f-date-start').value,
+    'Ngày kết thúc': document.getElementById('f-date-end').value,
+    'Mức độ ưu tiên': selectedPriority || '',
+    'Lý do ưu tiên': document.getElementById('f-priority-reason').value.trim(),
+    'Hình thức triển khai': getChecked('f-format'),
+    'Kênh truyền thông': getChecked('f-channels'),
+    'Tên sản phẩm': document.getElementById('f-product-name').value.trim(),
+    'Danh mục': document.getElementById('f-category').value.trim(),
+    'Pricing': document.getElementById('f-pricing').value.trim(),
+    'Khuyến mãi': document.getElementById('f-promo').value.trim(),
+    'Features': document.getElementById('f-features').value.trim(),
+    'Benefits': document.getElementById('f-benefits').value.trim(),
+    'Assets có sẵn': getChecked('f-assets'),
+    'Link tài liệu': document.getElementById('f-link').value.trim(),
+    'Đối thủ': document.getElementById('f-competitors').value.trim(),
+    'Yêu cầu đặc biệt': document.getElementById('f-special').value.trim(),
+    'Hạn chế': document.getElementById('f-constraints').value.trim(),
+  };
+}
+
+// ─── VALIDATE ──────────────────────────────────────────────────────────────────
+function validate(data) {
+  const checks = [
+    [!data['Phòng ban'], 'Tên phòng ban / Bộ phận', 1],
+    [!data['Người yêu cầu'], 'Người yêu cầu', 1],
+    [!data['Chức danh'], 'Chức danh', 1],
+    [!data['Email'], 'Email liên hệ', 1],
+    [!data['Người phê duyệt'], 'Người phê duyệt chính', 1],
+    [!data['Mục tiêu'], 'Mục tiêu campaign (chọn ít nhất 1)', 2],
+    [!data['KPI'], 'Target KPI', 2],
+    [!data['Target Audience'], 'Đối tượng mục tiêu', 2],
+    [!data['Thị trường'], 'Thị trường / Khu vực', 2],
+    [!data['Key Message'], 'Thông điệp chính', 2],
+    [!data['USP'], 'USP / Điểm khác biệt', 2],
+    [!data['Nguồn ngân sách'], 'Nguồn ngân sách (chọn ít nhất 1)', 2],
+    [!data['Ngày bắt đầu'], 'Ngày bắt đầu triển khai', 3],
+    [!data['Ngày kết thúc'], 'Ngày kết thúc triển khai', 3],
+    [!data['Mức độ ưu tiên'], 'Mức độ ưu tiên (chọn 1–5)', 3],
+    [!data['Lý do ưu tiên'], 'Lý do ưu tiên', 3],
+    [!data['Hình thức triển khai'], 'Hình thức triển khai (chọn ít nhất 1)', 4],
+    [!data['Kênh truyền thông'], 'Kênh truyền thông (chọn ít nhất 1)', 4],
+  ];
+  for (const [cond, msg, step] of checks) {
+    if (cond) { return { ok: false, msg, step }; }
+  }
+  return { ok: true };
+}
+
+// ─── SUBMIT ───────────────────────────────────────────────────────────────────
+async function submitForm() {
+  const data = collectData();
+  const v = validate(data);
+  if (!v.ok) {
+    alert(`⚠️ Vui lòng điền: ${v.msg}`);
+    goTo(v.step);
+    return;
+  }
+
+  const loader = document.getElementById('loader');
+  loader.classList.add('open');
+  document.getElementById('btn-next').disabled = true;
+
+  const now = new Date();
+  const ts = now.toLocaleDateString('vi-VN') + ' ' + now.toLocaleTimeString('vi-VN');
+  data['Submitted At'] = ts;
+  data['ID'] = 'BR-' + Date.now();
+
+  // Save to localStorage
+  const local = JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]');
+  local.unshift(data);
+  localStorage.setItem(LOCAL_KEY, JSON.stringify(local));
+
+  // POST to Google Sheets
+  const scriptUrl = localStorage.getItem(URL_KEY);
+  if (scriptUrl) {
+    try {
+      await fetch(scriptUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+    } catch (e) {}
+  }
+
+  setTimeout(() => {
+    loader.classList.remove('open');
+    document.getElementById('btn-next').disabled = false;
+    document.getElementById('progress-bar').style.display = 'none';
+    document.getElementById('nav-bar').style.display = 'none';
+    document.getElementById(`panel-${currentStep}`).classList.remove('active');
+    document.getElementById('success-screen').style.display = 'block';
+  }, 1200);
+}
+
+// ─── RESET ────────────────────────────────────────────────────────────────────
+function resetForm() {
+  document.getElementById('success-screen').style.display = 'none';
+  document.getElementById('progress-bar').style.display = 'flex';
+  document.getElementById('nav-bar').style.display = 'flex';
+  document.querySelectorAll('input[type="text"],input[type="email"],textarea').forEach(i => i.value = '');
+  document.querySelectorAll('input[type="date"]').forEach(i => i.value = '');
+  document.querySelectorAll('input[type="checkbox"]').forEach(i => { i.checked = false; i.closest('.check-item').classList.remove('selected'); });
+  document.querySelectorAll('.scale-opt').forEach(o => o.classList.remove('selected'));
+  selectedPriority = null;
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('f-submit-date').value = today;
+  goTo(0);
+  loadAndRender();
+}
+
+// ─── EXPORT CSV ───────────────────────────────────────────────────────────────
+function exportCSV() {
+  const local = JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]');
+  if (!local.length) { alert('Chưa có brief nào để xuất.'); return; }
+  const headers = Object.keys(local[0]);
+  const rows = [headers.join(',')];
+  local.forEach(b => {
+    rows.push(headers.map(h => `"${(b[h] || '').toString().replace(/"/g, '""')}"`).join(','));
+  });
+  const blob = new Blob(['\ufeff' + rows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'PMAX_Briefs_' + new Date().toLocaleDateString('vi-VN').replace(/\//g, '-') + '.csv';
+  a.click();
+}
+</script>
+</body>
+</html>
